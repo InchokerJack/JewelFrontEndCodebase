@@ -13,8 +13,6 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { ExternalLinkIcon, CopyIcon } from "@chakra-ui/icons";
-import { useEthers } from "@usedapp/core";
-import Identicon from "./Identicon";
 
 type Props = {
   isOpen: any;
@@ -22,11 +20,9 @@ type Props = {
 };
 
 export default function AccountModal({ isOpen, onClose }: Props) {
-  const { account, deactivate } = useEthers();
 
   function handleDeactivateAccount() {
-    deactivate();
-    onClose();
+    console.log('close')
   }
 
   return (
@@ -85,7 +81,6 @@ export default function AccountModal({ isOpen, onClose }: Props) {
               </Button>
             </Flex>
             <Flex alignItems="center" mt={2} mb={4} lineHeight={1}>
-              <Identicon />
               <Text
                 color="white"
                 fontSize="xl"
@@ -93,11 +88,7 @@ export default function AccountModal({ isOpen, onClose }: Props) {
                 ml="2"
                 lineHeight="1.1"
               >
-                {account &&
-                  `${account.slice(0, 6)}...${account.slice(
-                    account.length - 4,
-                    account.length
-                  )}`}
+                Account
               </Text>
             </Flex>
             <Flex alignContent="center" m={3}>
@@ -118,7 +109,7 @@ export default function AccountModal({ isOpen, onClose }: Props) {
                 fontSize="sm"
                 display="flex"
                 alignItems="center"
-                href={`https://ropsten.etherscan.io/address/${account}`}
+                href={`https://ropsten.etherscan.io/address/`}
                 isExternal
                 color="gray.400"
                 ml={6}
