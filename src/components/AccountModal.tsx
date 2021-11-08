@@ -11,8 +11,8 @@ import {
   ModalBody,
   ModalCloseButton,
   Text,
-} from "@chakra-ui/react";
-import { ExternalLinkIcon, CopyIcon } from "@chakra-ui/icons";
+} from '@chakra-ui/react';
+import { ExternalLinkIcon, CopyIcon } from '@chakra-ui/icons';
 
 type Props = {
   isOpen: any;
@@ -20,9 +20,8 @@ type Props = {
 };
 
 export default function AccountModal({ isOpen, onClose }: Props) {
-
   function handleDeactivateAccount() {
-    console.log('close')
+    console.log('close');
   }
 
   return (
@@ -33,8 +32,7 @@ export default function AccountModal({ isOpen, onClose }: Props) {
         border="1px"
         borderStyle="solid"
         borderColor="gray.700"
-        borderRadius="3xl"
-      >
+        borderRadius="3xl">
         <ModalHeader color="white" px={4} fontSize="lg" fontWeight="medium">
           Account
         </ModalHeader>
@@ -42,7 +40,7 @@ export default function AccountModal({ isOpen, onClose }: Props) {
           color="white"
           fontSize="sm"
           _hover={{
-            color: "whiteAlpha.700",
+            color: 'whiteAlpha.700',
           }}
         />
         <ModalBody pt={0} px={4}>
@@ -54,8 +52,7 @@ export default function AccountModal({ isOpen, onClose }: Props) {
             px={5}
             pt={4}
             pb={2}
-            mb={3}
-          >
+            mb={3}>
             <Flex justifyContent="space-between" alignItems="center" mb={3}>
               <Text color="gray.400" fontSize="sm">
                 Connected with MetaMask
@@ -71,23 +68,16 @@ export default function AccountModal({ isOpen, onClose }: Props) {
                 px={2}
                 height="26px"
                 _hover={{
-                  background: "none",
-                  borderColor: "blue.300",
-                  textDecoration: "underline",
+                  background: 'none',
+                  borderColor: 'blue.300',
+                  textDecoration: 'underline',
                 }}
-                onClick={handleDeactivateAccount}
-              >
+                onClick={handleDeactivateAccount}>
                 Change
               </Button>
             </Flex>
             <Flex alignItems="center" mt={2} mb={4} lineHeight={1}>
-              <Text
-                color="white"
-                fontSize="xl"
-                fontWeight="semibold"
-                ml="2"
-                lineHeight="1.1"
-              >
+              <Text color="white" fontSize="xl" fontWeight="semibold" ml="2" lineHeight="1.1">
                 Account
               </Text>
             </Flex>
@@ -98,10 +88,9 @@ export default function AccountModal({ isOpen, onClose }: Props) {
                 fontWeight="normal"
                 fontSize="sm"
                 _hover={{
-                  textDecoration: "none",
-                  color: "whiteAlpha.800",
-                }}
-              >
+                  textDecoration: 'none',
+                  color: 'whiteAlpha.800',
+                }}>
                 <CopyIcon mr={1} />
                 Copy Address
               </Button>
@@ -114,10 +103,9 @@ export default function AccountModal({ isOpen, onClose }: Props) {
                 color="gray.400"
                 ml={6}
                 _hover={{
-                  color: "whiteAlpha.800",
-                  textDecoration: "underline",
-                }}
-              >
+                  color: 'whiteAlpha.800',
+                  textDecoration: 'underline',
+                }}>
                 <ExternalLinkIcon mr={1} />
                 View on Explorer
               </Link>
@@ -130,14 +118,8 @@ export default function AccountModal({ isOpen, onClose }: Props) {
           background="gray.700"
           borderBottomLeftRadius="3xl"
           borderBottomRightRadius="3xl"
-          p={6}
-        >
-          <Text
-            color="white"
-            textAlign="left"
-            fontWeight="medium"
-            fontSize="md"
-          >
+          p={6}>
+          <Text color="white" textAlign="left" fontWeight="medium" fontSize="md">
             Your transactions willl appear here...
           </Text>
         </ModalFooter>
