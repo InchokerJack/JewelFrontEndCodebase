@@ -1,11 +1,11 @@
-import { IconButton, Menu, MenuButton, MenuItem, MenuList, useDisclosure } from '@chakra-ui/react';
+import { IconButton, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
 import { AddIcon, ExternalLinkIcon, HamburgerIcon } from '@chakra-ui/icons';
 import React from 'react';
 
 interface Iprops {
   handleOpenInput: any;
 }
-export function MainMenu({ handleOpenInput }: Iprops) {
+export function MainMenu({ handleOpenInput }: Iprops): JSX.Element {
   return (
     <Menu>
       <MenuButton

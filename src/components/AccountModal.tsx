@@ -19,7 +19,7 @@ type Props = {
   onClose: any;
 };
 
-export default function AccountModal({ isOpen, onClose }: Props) {
+export default function AccountModal({ isOpen, onClose }: Props): JSX.Element {
   function handleDeactivateAccount() {
     console.log('close');
   }

@@ -8,7 +8,7 @@ type Props = {
   handleOpenDialog2: any;
 };
 
-export default function ConnectButton({ handleOpenModal, handleOpenDialog2 }: Props) {
+export default function ConnectButton({ handleOpenModal, handleOpenDialog2 }: Props): JSX.Element {
   const { state, dispatch } = useContext(StoreContext);
   const [login, setLogin] = useState(false);
 

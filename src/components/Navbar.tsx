@@ -1,7 +1,7 @@
-import { Box, Flex, Heading, Text } from '@chakra-ui/react';
+import { Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 
-export default function Navbar() {
+export default function Navbar(): JSX.Element {
   return (
     <Flex w="100%" justifyContent="center">
       <Text color="gray.400" fontWeight="600" textDecoration="underline">

@@ -15,7 +15,7 @@ interface Iprops {
   onClose: any;
 }
 
-export default function Dialog({ message, isOpen, onClose }: Iprops) {
+export default function Dialog({ message, isOpen, onClose }: Iprops): JSX.Element {
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>

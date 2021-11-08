@@ -13,14 +13,16 @@ import {
 } from '@chakra-ui/react';
 import ConnectButton from './ConnectButton';
 import AccountModal from './AccountModal';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Dialog from './Dialog';
 import Navbar from './Navbar';
 import { Container, Next, Paginator, Previous, usePaginator } from 'chakra-paginator';
 import { MainMenu } from './MainMenu';
+import { ProposalDataType } from 'src/constants';
+import { getProposal } from 'src/api';
+// import axios from 'axios';
 
-export default function Layout() {
-  const pagesQuantity = 12;
+export default function Layout(): JSX.Element {
   const { currentPage, setCurrentPage } = usePaginator({
     initialState: { currentPage: 1 },
   });
@@ -28,6 +30,37 @@ export default function Layout() {
   const { isOpen: isOpenDialog2, onOpen: onOpenDialog2, onClose: onCloseDialog2 } = useDisclosure();
   const { isOpen: isOpenDialog3, onOpen: onOpenDialog3, onClose: onCloseDialog3 } = useDisclosure();
   const [radioCheck, setRadioCheck] = useState('radio-1');
+
+  const [proposalData, setProposalData] = useState<ProposalDataType[]>([]);
+  const pagesQuantity = proposalData.length;
+
+  useEffect(() => {
+    const fetch = async () => {
+      const data = await getProposal();
+      console.log(data);
+      setProposalData(data);
+    };
+
+    fetch();
+  }, []);
+
+  const renderProposalDescription = () => {
+    return proposalData.length > 0 && proposalData[currentPage - 1].description;
+  };
+
+  const renderProposalOptions = () => {
+    return (
+      proposalData.length > 0 &&
+      proposalData[currentPage - 1].options.map((option: string, index: number) => (
+        <>
+          <Radio value={`radio-${index}`}>
+            <Box color="gray.400">{option}</Box>
+          </Radio>
+        </>
+      ))
+    );
+  };
+
   return (
     <Box bg="gray.800" minHeight="100vh" w="100%">
       <Dialog
@@ -97,13 +130,7 @@ export default function Layout() {
           textColor="gray.400"
           p="15px">
           <Box w="100%" overflowY="scroll" maxHeight="100px">
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
-            has been the industry `&apos;`s standard dummy text ever since the 1500s, when an
-            unknown printer took a galley of type and scrambled it to make a type specimen book. It
-            has survived not only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s with the release of
-            Letraset sheets containing Lorem Ipsum passages, and more recently with desktop
-            publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+            {renderProposalDescription()}
           </Box>
         </Box>
       </Box>
@@ -135,14 +162,7 @@ export default function Layout() {
         </Heading>
         <Box h="15px" w="100%"></Box>
         <RadioGroup onChange={setRadioCheck} value={radioCheck}>
-          <Stack direction="column">
-            <Radio value="radio-1">
-              <Box color="gray.400">First</Box>
-            </Radio>
-            <Radio value="radio-2">
-              <Box color="gray.400">Second</Box>
-            </Radio>
-          </Stack>
+          <Stack direction="column">{renderProposalOptions()}</Stack>
         </RadioGroup>
         <Box h="30px" w="100%"></Box>
         <Flex w="100%" m="auto">
