@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import ConnectButton from './ConnectButton';
 import AccountModal from './AccountModal';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Dialog from './Dialog';
 import Navbar from './Navbar';
 import { Container, Next, Paginator, Previous, usePaginator } from 'chakra-paginator';
@@ -30,9 +30,18 @@ export default function Layout(): JSX.Element {
   const { isOpen: isOpenDialog2, onOpen: onOpenDialog2, onClose: onCloseDialog2 } = useDisclosure();
   const { isOpen: isOpenDialog3, onOpen: onOpenDialog3, onClose: onCloseDialog3 } = useDisclosure();
   const [radioCheck, setRadioCheck] = useState('radio-1');
+  const [isScroll, setIsScroll] = useState(false);
 
   const [proposalData, setProposalData] = useState<ProposalDataType[]>([]);
   const pagesQuantity = proposalData.length;
+
+  const textareaRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      setIsScroll(textareaRef.current.scrollHeight > 100);
+    }
+  }, [currentPage]);
 
   useEffect(() => {
     const fetch = async () => {
@@ -129,7 +138,11 @@ export default function Layout(): JSX.Element {
           borderRadius="25"
           textColor="gray.400"
           p="15px">
-          <Box w="100%" overflowY="scroll" maxHeight="100px">
+          <Box
+            ref={textareaRef}
+            w="100%"
+            overflowY={isScroll ? 'scroll' : 'hidden'}
+            maxHeight="100px">
             {renderProposalDescription()}
           </Box>
         </Box>
@@ -171,7 +184,13 @@ export default function Layout(): JSX.Element {
             Reward
           </Flex>
           <Box w="50%">
-            <Input placeholder="0" w="200px" ml="50px" color="gray.400" />
+            <Input
+              value={proposalData.length > 0 ? proposalData[currentPage - 1].rewardPercent : ''}
+              w="200px"
+              ml="50px"
+              color="gray.400"
+              readOnly
+            />
           </Box>
         </Flex>
         <Box h="30px" w="100%"></Box>

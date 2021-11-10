@@ -15,7 +15,6 @@ module.exports = {
   extends: [
     'plugin:react/recommended', // Uses the recommended rules from @eslint-plugin-react
     'plugin:@typescript-eslint/recommended', // Uses the recommended rules from @typescript-eslint/eslint-plugin
-    'plugin:@typescript-eslint/recommended-requiring-type-checking', // Uses the recommended rules from @typescript-eslint/recommended-requiring-type-checking
   ],
   rules: {
     // suppress errors for missing 'import React' in files
