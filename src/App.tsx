@@ -1,7 +1,7 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import theme from './theme';
 import Layout from './components/Layout';
-import '@fontsource/inter';
+import '@fontsource/dm-sans';
 import { createContext, Dispatch, useReducer } from 'react';
 
 interface State {
@@ -35,7 +35,7 @@ interface ContextProps {
   dispatch: Dispatch<Actions>;
 }
 export const StoreContext = createContext({} as ContextProps);
-function App() {
+function App(): JSX.Element {
   const [state, dispatch] = useReducer(reducer, initialState);
   return (
     <StoreContext.Provider value={{ state, dispatch }}>

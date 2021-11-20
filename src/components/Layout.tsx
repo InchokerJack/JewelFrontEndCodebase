@@ -1,26 +1,17 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Input,
-  Radio,
-  RadioGroup,
-  Spacer,
-  Stack,
-  Text,
-  useDisclosure,
-} from '@chakra-ui/react';
+import { Box, Flex, Heading, Spacer, Text, useDisclosure } from '@chakra-ui/react';
 import ConnectButton from './ConnectButton';
 import AccountModal from './AccountModal';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Dialog from './Dialog';
 import Navbar from './Navbar';
 import { Container, Next, Paginator, Previous, usePaginator } from 'chakra-paginator';
-import { MainMenu } from './MainMenu';
 import { ProposalDataType } from 'src/constants';
 import { getProposal } from 'src/api';
+import ContentPage from './ContentPage';
 // import axios from 'axios';
+import { ReactComponent as ButtonArrowLeft } from 'src/assets/icons/button-arrow-left.svg';
+import { ReactComponent as ButtonArrowRight } from 'src/assets/icons/button-arrow-right.svg';
+import { ReactComponent as ButtonSpace } from 'src/assets/icons/button-space.svg';
 
 export default function Layout(): JSX.Element {
   const { currentPage, setCurrentPage } = usePaginator({
@@ -28,8 +19,6 @@ export default function Layout(): JSX.Element {
   });
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isOpen: isOpenDialog2, onOpen: onOpenDialog2, onClose: onCloseDialog2 } = useDisclosure();
-  const { isOpen: isOpenDialog3, onOpen: onOpenDialog3, onClose: onCloseDialog3 } = useDisclosure();
-  const [radioCheck, setRadioCheck] = useState('radio-1');
   const [isScroll, setIsScroll] = useState(false);
 
   const [proposalData, setProposalData] = useState<ProposalDataType[]>([]);
@@ -57,21 +46,8 @@ export default function Layout(): JSX.Element {
     return proposalData.length > 0 && proposalData[currentPage - 1].description;
   };
 
-  const renderProposalOptions = () => {
-    return (
-      proposalData.length > 0 &&
-      proposalData[currentPage - 1].options.map((option: string, index: number) => (
-        <>
-          <Radio value={`radio-${index}`}>
-            <Box color="gray.400">{option}</Box>
-          </Radio>
-        </>
-      ))
-    );
-  };
-
   return (
-    <Box bg="gray.800" minHeight="100vh" w="100%">
+    <Box bg="#0B0321" color="#fff" minHeight="100vh" w="100%" padding="20px" paddingBottom="58px">
       <Dialog
         isOpen={isOpenDialog2}
         onClose={onCloseDialog2}
@@ -88,117 +64,56 @@ export default function Layout(): JSX.Element {
           </>
         }
       />
-      <Flex>
-        <Spacer />
-        <Flex color="gray.400" alignItems="center" fontWeight="600">
-          Commit balance
+      <Flex
+        justifyContent="space-between"
+        p="9px"
+        borderRadius="16px"
+        bg="rgba(255, 255, 255, 0.1)">
+        <Flex>
+          <Navbar />
         </Flex>
-        <Input readOnly={true} placeholder="0" w="200px" ml="20px" color="gray.400" />
-        <MainMenu handleOpenInput={onOpenDialog3} />
-        <ConnectButton handleOpenModal={onOpen} handleOpenDialog2={onOpenDialog2} />
-        <AccountModal isOpen={isOpen} onClose={onClose} />
-      </Flex>
-      {isOpenDialog3 ? (
-        <>
-          <Box h="10px" w="100%"></Box>
-          <Flex>
-            <Spacer />
-            <Flex color="gray.400" alignItems="center" fontWeight="600">
-              Please input the commitb balance you want
-            </Flex>
-            <Input placeholder="0" w="200px" ml="20px" color="gray.400" />
-            <Button colorScheme="blue">Enter</Button>
-            <Button onClick={onCloseDialog3} colorScheme="red">
-              Close
-            </Button>
-          </Flex>
-          <Box h="10px" w="100%"></Box>
-        </>
-      ) : null}
-      <Navbar />
-      <Box h="100px" w="100%"></Box>
-      <Flex w="100%" justifyContent="center">
-        <Box>
-          <Heading color="gray.400" size="2xl" margin="auto">
-            JURY Webpage
-          </Heading>
-        </Box>
-      </Flex>
-      <Box h="30px"></Box>
-      <Box w="50%" m="auto">
-        <Heading color="gray.400" fontSize="30px">
-          Proposal
-        </Heading>
-        <Box h="15px"></Box>
-        <Box
-          h="150px"
-          w="100%"
-          border="1px"
-          borderColor="gray.400"
-          borderRadius="25"
-          textColor="gray.400"
-          p="15px">
-          <Box
-            ref={textareaRef}
-            w="100%"
-            overflowY={isScroll ? 'scroll' : 'hidden'}
-            maxHeight="100px">
-            {renderProposalDescription()}
-          </Box>
-        </Box>
-      </Box>
-      <Box h="20px" w="100%"></Box>
-
-      <Box w="30%" m="auto">
-        <Box>
+        <Flex alignItems="center">
           <Spacer />
-          {/*pagination*/}
-          <Paginator
-            pagesQuantity={pagesQuantity}
-            currentPage={currentPage}
-            onPageChange={setCurrentPage}>
-            <Container align="center" justify="center" w="full" p={4}>
-              <Previous>
-                Previous
-                {/* Or an icon from `react-icons` */}
-              </Previous>
-              <Text color="gray.400">{`${currentPage}/${pagesQuantity}`}</Text>
-              <Next>
-                Next
-                {/* Or an icon from `react-icons` */}
-              </Next>
-            </Container>
-          </Paginator>
-        </Box>
-        <Heading color="gray.400" fontSize="20px">
-          Options
-        </Heading>
-        <Box h="15px" w="100%"></Box>
-        <RadioGroup onChange={setRadioCheck} value={radioCheck}>
-          <Stack direction="column">{renderProposalOptions()}</Stack>
-        </RadioGroup>
-        <Box h="30px" w="100%"></Box>
-        <Flex w="100%" m="auto">
-          <Flex color="gray.400" alignItems="center" w="50%">
-            <Spacer />
-            Reward
+          <Flex
+            bg="rgba(255, 255, 255, 0.2)"
+            padding="14px"
+            borderRadius="8px"
+            mr="12px"
+            maxHeight="48px">
+            <Text pr="12px">Commit Balance</Text>
+            <Text fontWeight="700">356</Text>
           </Flex>
-          <Box w="50%">
-            <Input
-              value={proposalData.length > 0 ? proposalData[currentPage - 1].rewardPercent : ''}
-              w="200px"
-              ml="50px"
-              color="gray.400"
-              readOnly
-            />
-          </Box>
+          <ConnectButton handleOpenModal={onOpen} handleOpenDialog2={onOpenDialog2} />
+          <AccountModal isOpen={isOpen} onClose={onClose} />
         </Flex>
-        <Box h="30px" w="100%"></Box>
-        <Flex w="100%" justifyContent="center">
-          <Button>Vote</Button>
-        </Flex>
-        <Box h="30px" w="100%"></Box>
-      </Box>
+      </Flex>
+
+      <ContentPage />
+
+      <Flex justifyContent="center" mt="91px">
+        <Box userSelect="none" cursor="pointer">
+          <Flex justifyContent="center">
+            <ButtonArrowLeft />
+          </Flex>
+          <Text color="rgba(145, 145, 145, 0.8)" fontSize="14px" pt="11px">
+            Vote for A
+          </Text>
+        </Box>
+        <Box userSelect="none" cursor="pointer" mx="50px">
+          <ButtonSpace />
+          <Text color="rgba(145, 145, 145, 0.8)" textAlign="center" fontSize="14px" pt="11px">
+            next proposal
+          </Text>
+        </Box>
+        <Box userSelect="none" cursor="pointer">
+          <Flex justifyContent="center">
+            <ButtonArrowRight />
+          </Flex>
+          <Text color="rgba(145, 145, 145, 0.8)" fontSize="14px" pt="11px">
+            Vote for B
+          </Text>
+        </Box>
+      </Flex>
     </Box>
   );
 }

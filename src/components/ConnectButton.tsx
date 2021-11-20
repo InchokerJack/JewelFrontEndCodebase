@@ -1,7 +1,9 @@
-import { Box, Button, Text } from '@chakra-ui/react';
+import { Button, Text } from '@chakra-ui/react';
 import { useContext, useState } from 'react';
 import detectEthereumProvider from '@metamask/detect-provider';
 import { actionType, StoreContext } from '../App';
+import { formatAddress } from 'src/helpers';
+import { ReactComponent as Avatar1 } from 'src/assets/icons/avatar-1.svg';
 
 type Props = {
   handleOpenModal: any;
@@ -35,47 +37,28 @@ export default function ConnectButton({ handleOpenModal, handleOpenDialog2 }: Pr
   }
 
   return login ? (
-    <Box display="flex" alignItems="center" background="gray.700" borderRadius="xl" py="0">
-      <Box px="3">
-        <Text color="white" fontSize="md">
-          WALLET
-        </Text>
-      </Box>
-      <Button
-        onClick={handleOpenModal}
-        bg="gray.800"
-        border="1px solid transparent"
-        _hover={{
-          border: '1px',
-          borderStyle: 'solid',
-          borderColor: 'blue.400',
-          backgroundColor: 'gray.700',
-        }}
-        borderRadius="xl"
-        m="1px"
-        px={3}
-        height="38px">
-        <Text color="white" fontSize="md" fontWeight="medium" mr="2">
-          {state.address}
-        </Text>
-      </Button>
-    </Box>
+    <Button
+      onClick={handleOpenModal}
+      height="50px"
+      bg="rgba(255, 255, 255, 0.2)"
+      maxHeight="48px"
+      _hover={{
+        backgroundColor: 'rgba(255, 255, 255, 0.3)',
+      }}>
+      <Avatar1 />
+      <Text color="white" fontSize="md" fontWeight="medium" pl="12px">
+        {formatAddress(state.address ?? '')}
+      </Text>
+    </Button>
   ) : (
     <Button
       onClick={handleConnectWallet}
-      bg="blue.800"
-      color="blue.300"
-      fontSize="lg"
-      fontWeight="medium"
-      borderRadius="xl"
-      border="1px solid transparent"
+      bg="rgba(255, 255, 255, 0.2)"
+      maxHeight="48px"
+      fontWeight="normal"
+      height="50px"
       _hover={{
-        borderColor: 'blue.700',
-        color: 'blue.400',
-      }}
-      _active={{
-        backgroundColor: 'blue.800',
-        borderColor: 'blue.700',
+        backgroundColor: 'rgba(255, 255, 255, 0.3)',
       }}>
       Connect to a wallet
     </Button>
