@@ -1,8 +1,10 @@
-import { Flex, Text, Divider, Box } from '@chakra-ui/react';
+import { Flex, Text, Divider, Box, useMediaQuery } from '@chakra-ui/react';
 import { useState } from 'react';
 
 export default function Navbar(): JSX.Element {
   const [tabIndex, setTabIndex] = useState(0);
+
+  const [isLargerThan414] = useMediaQuery(['(min-width: 414px']);
 
   const renderTabIndicator = (tabIndex: number) => {
     type PositionStatus = 'top' | 'left' | 'width';
@@ -67,6 +69,7 @@ export default function Navbar(): JSX.Element {
         px="32px"
         onClick={() => setTabIndex(0)}
         userSelect="none"
+        whiteSpace="nowrap"
         style={{ cursor: 'pointer' }}
         _hover={{
           color: '#dddbdb',
@@ -84,6 +87,7 @@ export default function Navbar(): JSX.Element {
         px="32px"
         onClick={() => setTabIndex(1)}
         userSelect="none"
+        whiteSpace="nowrap"
         style={{ cursor: 'pointer' }}
         _hover={{
           color: '#dddbdb',
@@ -99,8 +103,10 @@ export default function Navbar(): JSX.Element {
       <Text
         fontWeight="500"
         pl="32px"
+        pr={!isLargerThan414 ? '9px' : ''}
         onClick={() => setTabIndex(2)}
         userSelect="none"
+        whiteSpace="nowrap"
         style={{ cursor: 'pointer' }}
         _hover={{
           color: '#dddbdb',

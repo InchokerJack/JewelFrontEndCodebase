@@ -1,10 +1,9 @@
-import { Box, Flex, Heading, Spacer, Text, useDisclosure } from '@chakra-ui/react';
+import { Box, Flex, Spacer, Text, useDisclosure, useMediaQuery } from '@chakra-ui/react';
 import ConnectButton from './ConnectButton';
 import AccountModal from './AccountModal';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Dialog from './Dialog';
 import Navbar from './Navbar';
-import { Container, Next, Paginator, Previous, usePaginator } from 'chakra-paginator';
 import { ProposalDataType } from 'src/constants';
 import { getProposal } from 'src/api';
 import ContentPage from './ContentPage';
@@ -14,40 +13,47 @@ import { ReactComponent as ButtonArrowRight } from 'src/assets/icons/button-arro
 import { ReactComponent as ButtonSpace } from 'src/assets/icons/button-space.svg';
 
 export default function Layout(): JSX.Element {
-  const { currentPage, setCurrentPage } = usePaginator({
-    initialState: { currentPage: 1 },
-  });
+  const [currentPage, setCurrentPage] = useState(1);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isOpen: isOpenDialog2, onOpen: onOpenDialog2, onClose: onCloseDialog2 } = useDisclosure();
-  const [isScroll, setIsScroll] = useState(false);
 
   const [proposalData, setProposalData] = useState<ProposalDataType[]>([]);
   const pagesQuantity = proposalData.length;
 
-  const textareaRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (textareaRef.current) {
-      setIsScroll(textareaRef.current.scrollHeight > 100);
-    }
-  }, [currentPage]);
+  const [isLargerThan414] = useMediaQuery(['(min-width: 414px']);
 
   useEffect(() => {
     const fetch = async () => {
       const data = await getProposal();
-      console.log(data);
       setProposalData(data);
     };
 
     fetch();
   }, []);
 
-  const renderProposalDescription = () => {
-    return proposalData.length > 0 && proposalData[currentPage - 1].description;
+  const handleNext = () => {
+    if (currentPage >= pagesQuantity) return;
+
+    setCurrentPage(currentPage + 1);
+  };
+
+  const handleNextForSpacebar = (e: any) => {
+    if (currentPage >= pagesQuantity) return;
+
+    const keyCode = window.event ? e.which : e.keyCode;
+    if (keyCode === 13) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
   };
 
   return (
-    <Box bg="#0B0321" color="#fff" minHeight="100vh" w="100%" padding="20px" paddingBottom="58px">
+    <Box bg="#0B0321" color="#fff" w="100%" padding="20px" paddingBottom="58px">
       <Dialog
         isOpen={isOpenDialog2}
         onClose={onCloseDialog2}
@@ -66,13 +72,37 @@ export default function Layout(): JSX.Element {
       />
       <Flex
         justifyContent="space-between"
-        p="9px"
+        p={isLargerThan414 ? '9px' : ''}
+        py={!isLargerThan414 ? '23px' : ''}
+        px={!isLargerThan414 ? '9px' : ''}
         borderRadius="16px"
-        bg="rgba(255, 255, 255, 0.1)">
+        bg="rgba(255, 255, 255, 0.1)"
+        overflowX="auto"
+        overflowY="hidden">
         <Flex>
           <Navbar />
         </Flex>
-        <Flex alignItems="center">
+        {isLargerThan414 && (
+          <Flex alignItems="center">
+            <Spacer />
+            <Flex
+              bg="rgba(255, 255, 255, 0.2)"
+              padding="14px"
+              borderRadius="8px"
+              mr="12px"
+              maxHeight="48px">
+              <Text pr="12px" whiteSpace="nowrap">
+                Commit Balance
+              </Text>
+              <Text fontWeight="700">356</Text>
+            </Flex>
+            <ConnectButton handleOpenModal={onOpen} handleOpenDialog2={onOpenDialog2} />
+            <AccountModal isOpen={isOpen} onClose={onClose} />
+          </Flex>
+        )}
+      </Flex>
+      {!isLargerThan414 && (
+        <Flex mt="18px">
           <Spacer />
           <Flex
             bg="rgba(255, 255, 255, 0.2)"
@@ -80,34 +110,40 @@ export default function Layout(): JSX.Element {
             borderRadius="8px"
             mr="12px"
             maxHeight="48px">
-            <Text pr="12px">Commit Balance</Text>
+            <Text pr="12px" whiteSpace="nowrap">
+              Commit Balance
+            </Text>
             <Text fontWeight="700">356</Text>
           </Flex>
           <ConnectButton handleOpenModal={onOpen} handleOpenDialog2={onOpenDialog2} />
           <AccountModal isOpen={isOpen} onClose={onClose} />
         </Flex>
-      </Flex>
+      )}
 
-      <ContentPage />
+      <ContentPage proposalData={proposalData} currentPage={currentPage} />
 
       <Flex justifyContent="center" mt="91px">
         <Box userSelect="none" cursor="pointer">
           <Flex justifyContent="center">
-            <ButtonArrowLeft />
+            <ButtonArrowLeft onClick={handlePrevious} />
           </Flex>
           <Text color="rgba(145, 145, 145, 0.8)" fontSize="14px" pt="11px">
             Vote for A
           </Text>
         </Box>
-        <Box userSelect="none" cursor="pointer" mx="50px">
-          <ButtonSpace />
-          <Text color="rgba(145, 145, 145, 0.8)" textAlign="center" fontSize="14px" pt="11px">
-            next proposal
-          </Text>
-        </Box>
+        {isLargerThan414 ? (
+          <Box userSelect="none" cursor="pointer" mx="50px" onClick={handleNextForSpacebar}>
+            <ButtonSpace />
+            <Text color="rgba(145, 145, 145, 0.8)" textAlign="center" fontSize="14px" pt="11px">
+              next proposal
+            </Text>
+          </Box>
+        ) : (
+          <Box width="50px"></Box>
+        )}
         <Box userSelect="none" cursor="pointer">
           <Flex justifyContent="center">
-            <ButtonArrowRight />
+            <ButtonArrowRight onClick={handleNext} />
           </Flex>
           <Text color="rgba(145, 145, 145, 0.8)" fontSize="14px" pt="11px">
             Vote for B
