@@ -85,17 +85,6 @@ export default function Layout(): JSX.Element {
         {isLargerThan414 && (
           <Flex alignItems="center">
             <Spacer />
-            <Flex
-              bg="rgba(255, 255, 255, 0.2)"
-              padding="14px"
-              borderRadius="8px"
-              mr="12px"
-              maxHeight="48px">
-              <Text pr="12px" whiteSpace="nowrap">
-                Commit Balance
-              </Text>
-              <Text fontWeight="700">356</Text>
-            </Flex>
             <ConnectButton handleOpenModal={onOpen} handleOpenDialog2={onOpenDialog2} />
             <AccountModal isOpen={isOpen} onClose={onClose} />
           </Flex>
@@ -104,17 +93,6 @@ export default function Layout(): JSX.Element {
       {!isLargerThan414 && (
         <Flex mt="18px">
           <Spacer />
-          <Flex
-            bg="rgba(255, 255, 255, 0.2)"
-            padding="14px"
-            borderRadius="8px"
-            mr="12px"
-            maxHeight="48px">
-            <Text pr="12px" whiteSpace="nowrap">
-              Commit Balance
-            </Text>
-            <Text fontWeight="700">356</Text>
-          </Flex>
           <ConnectButton handleOpenModal={onOpen} handleOpenDialog2={onOpenDialog2} />
           <AccountModal isOpen={isOpen} onClose={onClose} />
         </Flex>
